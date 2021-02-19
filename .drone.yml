@@ -1,6 +1,30 @@
 ---
 kind: pipeline
 type: docker
+name: Test
+
+trigger:
+  branch:
+    - master
+  event:
+    - pull_request
+
+steps:
+  - name: create-status
+    image: python:3.8-slim-buster
+    commands:
+      - "python -m pip install -r requirements.txt"
+      - "python main.py"
+    environment:
+      PLUGIN_API_TOKEN:
+        from_secret: GITHUB_API_TOKEN
+      PLUGIN_STATE: success
+      PLUGIN_CONTEXT: drone/status-test
+      PLUGIN_DESCRIPTION: Status created successfully
+
+---
+kind: pipeline
+type: docker
 name: Docker
 
 trigger:
