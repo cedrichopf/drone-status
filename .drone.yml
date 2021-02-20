@@ -59,6 +59,7 @@ steps:
     settings:
       api_key:
         from_secret: GITHUB_API_TOKEN
+      title: ${DRONE_SEMVER}
       files:
         - drone-status-*.tar.gz
       checksum:
