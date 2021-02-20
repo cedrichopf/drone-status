@@ -39,3 +39,59 @@ steps:
     settings:
       repo: cedrichopf/drone-status
       dry_run: true
+
+---
+kind: pipeline
+type: docker
+name: Release
+
+trigger:
+  event:
+    - tag
+
+steps:
+  - name: create-tarball
+    image: ubuntu:latest
+    commands:
+      - "tar -czvf drone-status-v${DRONE_SEMVER}.tar.gz main.py config drone github Pipfile Pipfile.lock requirements.txt README.md LICENSE"
+  - name: publish-github-release
+    image: plugins/github-release
+    settings:
+      api_key:
+        from_secret: GITHUB_API_TOKEN
+      files:
+        - drone-status-*.tar.gz
+      checksum:
+        - sha256
+        - sha512
+  - name: publish-docker-image
+    image: plugins/docker
+    settings:
+      auto_tag: true
+      repo: cedrichopf/drone-status
+      username:
+        from_secret: DOCKER_HUB_USERNAME
+      password:
+        from_secret: DOCKER_HUB_PASSWORD
+
+---
+kind: pipeline
+type: docker
+name: Latest-Release
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
+
+steps:
+  - name: publish-docker-image
+    image: plugins/docker
+    settings:
+      tags: latest
+      repo: cedrichopf/drone-status
+      username:
+        from_secret: DOCKER_HUB_USERNAME
+      password:
+        from_secret: DOCKER_HUB_PASSWORD
