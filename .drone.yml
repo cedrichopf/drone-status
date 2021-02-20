@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: docker
-name: Test
+name: Test Plugin
 
 trigger:
   branch:
@@ -19,7 +19,7 @@ steps:
       PLUGIN_API_TOKEN:
         from_secret: GITHUB_API_TOKEN
       PLUGIN_STATE: success
-      PLUGIN_CONTEXT: drone/status-test
+      PLUGIN_CONTEXT: drone-status/test-plugin
       PLUGIN_DESCRIPTION: Status created successfully
 
 ---
