@@ -78,7 +78,7 @@ steps:
     image: plugins/docker
     settings:
       auto_tag: true
-      repo: docker.pkg.github.com/cedrichopf/drone-status
+      repo: docker.pkg.github.com/cedrichopf/drone-status/drone-status
       registry: docker.pkg.github.com
       username:
         from_secret: GITHUB_USERNAME
@@ -110,7 +110,7 @@ steps:
     image: plugins/docker
     settings:
       auto_tag: true
-      repo: docker.pkg.github.com/cedrichopf/drone-status
+      repo: docker.pkg.github.com/cedrichopf/drone-status/drone-status
       registry: docker.pkg.github.com
       username:
         from_secret: GITHUB_USERNAME
